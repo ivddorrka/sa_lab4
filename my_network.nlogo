@@ -4,7 +4,11 @@ globals [
   hour
   percent-lockdown
   hour-demand
-
+  global-cc
+  closed-triplets
+  triplets
+  mean-betweenness
+  all-btwn
 ]
 
 breed[power-stations power-station]
@@ -16,6 +20,7 @@ power-stations-own[
   max-power
   current-power
   max-change-level
+  betweenness
 ]
 
 distribution-stations-own[
@@ -23,6 +28,7 @@ distribution-stations-own[
   level
   high-alarm-percent
   low-alarm-percent
+  betweenness
 ]
 
 
@@ -31,7 +37,9 @@ users-own[
   demand
   my-stations
   left-in-stations
+  betweenness
 ]
+
 
 
 to setup
@@ -44,6 +52,7 @@ to setup
   create-power-lines
 
   set hour 0
+  set global-cc 0
   set percent-lockdown []
 
   reset-ticks
@@ -134,6 +143,44 @@ to create-power-network
 
 end
 
+
+to global-clustering-coefficient
+
+
+  set closed-triplets sum [ nw:clustering-coefficient * count my-links * (count my-links - 1) ] of users
+  set closed-triplets closed-triplets + sum [ nw:clustering-coefficient * count my-links * (count my-links - 1) ] of power-stations
+  set closed-triplets closed-triplets + sum [ nw:clustering-coefficient * count my-links * (count my-links - 1) ] of distribution-stations
+
+
+  set triplets sum [ count my-links * (count my-links - 1) ] of users
+  set triplets triplets + sum [ count my-links * (count my-links - 1) ] of power-stations
+  set triplets triplets + sum [ count my-links * (count my-links - 1) ] of distribution-stations
+
+
+  set global-cc closed-triplets / triplets
+end
+
+
+
+to calculate-mean-betweenness
+
+
+  ;let all-btwn 0
+
+  ask users [ set betweenness nw:betweenness-centrality ]
+  ask power-stations [ set betweenness nw:betweenness-centrality ]
+  ask distribution-stations [ set betweenness nw:betweenness-centrality ]
+
+  set all-btwn sum [betweenness] of users
+  set all-btwn all-btwn + sum [betweenness] of power-stations
+  set all-btwn all-btwn + sum [betweenness] of distribution-stations
+
+
+  set mean-betweenness all-btwn / ( num-generation + num-distribution + num-users )
+
+
+
+end
 
 
 to go
@@ -301,6 +348,8 @@ to go
 
 
   ; time tick
+  if ticks = 0 [
+    global-clustering-coefficient]
 
   tick
   set hour remainder ticks 24
@@ -632,6 +681,61 @@ users-demand
 users-demand
 "double peaked" "gaussian" "uniform"
 0
+
+MONITOR
+973
+235
+1044
+280
+APL
+nw:mean-path-length
+17
+1
+11
+
+MONITOR
+973
+285
+1044
+330
+global-cc
+global-cc
+17
+1
+11
+
+MONITOR
+973
+335
+1115
+380
+mean-betweenness
+mean [nw:betweenness-centrality] of users + mean [nw:betweenness-centrality] of power-stations + mean [nw:betweenness-centrality] of distribution-stations
+17
+1
+11
+
+MONITOR
+973
+382
+1116
+427
+mean-closeness-centrality
+mean [nw:closeness-centrality] of users + mean [nw:closeness-centrality] of power-stations + mean [nw:closeness-centrality] of distribution-stations
+17
+1
+11
+
+MONITOR
+980
+433
+1175
+478
+mean-eigenvector-centrality
+mean [nw:eigenvector-centrality] of users + mean [nw:eigenvector-centrality] of power-stations + mean [nw:eigenvector-centrality] of distribution-stations
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
