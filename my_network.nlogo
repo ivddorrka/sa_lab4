@@ -710,7 +710,7 @@ MONITOR
 1115
 380
 mean-betweenness
-mean [nw:betweenness-centrality] of users + mean [nw:betweenness-centrality] of power-stations + mean [nw:betweenness-centrality] of distribution-stations
+(sum[nw:betweenness-centrality] of users  + sum [nw:betweenness-centrality] of power-stations + sum [nw:betweenness-centrality] of distribution-stations ) / (num-generation + num-distribution + num-users)
 17
 1
 11
@@ -721,7 +721,7 @@ MONITOR
 1116
 427
 mean-closeness-centrality
-mean [nw:closeness-centrality] of users + mean [nw:closeness-centrality] of power-stations + mean [nw:closeness-centrality] of distribution-stations
+(sum[nw:closeness-centrality] of users  + sum [nw:closeness-centrality] of power-stations + sum [nw:closeness-centrality] of distribution-stations ) / (num-generation + num-distribution + num-users)
 17
 1
 11
@@ -732,7 +732,7 @@ MONITOR
 1175
 478
 mean-eigenvector-centrality
-mean [nw:eigenvector-centrality] of users + mean [nw:eigenvector-centrality] of power-stations + mean [nw:eigenvector-centrality] of distribution-stations
+(sum[nw:eigenvector-centrality] of users  + sum [nw:eigenvector-centrality] of power-stations + sum [nw:eigenvector-centrality] of distribution-stations ) / (num-generation + num-distribution + num-users)
 17
 1
 11

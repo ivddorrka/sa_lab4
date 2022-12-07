@@ -402,7 +402,7 @@ CHOOSER
 network
 network
 "minimal" "complete" "random" "small world" "barabasi" "lattice"
-0
+2
 
 BUTTON
 362
@@ -566,22 +566,22 @@ stations-capacity
 stations-capacity
 0
 15
-14.5
+13.0
 0.5
 1
 NIL
 HORIZONTAL
 
 SLIDER
-46
-493
-242
-526
+43
+484
+239
+517
 generation-adjustment
 generation-adjustment
 0
 50
-39.5
+36.5
 0.5
 1
 NIL
@@ -611,7 +611,7 @@ generation-capacity
 generation-capacity
 0
 100
-47.0
+87.0
 1
 1
 NIL
